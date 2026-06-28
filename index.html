@@ -47,7 +47,17 @@
     .nav-overlay.open{display:block}
 
     /* HERO */
-    #home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;background:var(--bg1)}
+    #home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;background-image:url('ocean.avif');background-size:cover;background-position:center;position:relative}
+    #home::before{content:'';position:absolute;inset:0;background:rgba(10,40,36,.55);pointer-events:none}
+    #home .hero-left{position:relative;z-index:1}
+    #home .hero-eyebrow{color:#fff}
+    #home .hero-eyebrow::before{background:rgba(255,255,255,.5)}
+    #home h1.hero-name{color:#fff}
+    #home h1.hero-name em{color:#fff}
+    #home .hero-desc{color:#fff}
+    #home .btn-ghost{border-color:rgba(255,255,255,.6);color:#fff}
+    #home .btn-ghost:hover{border-color:#fff;color:#fff}
+    #navbar:not(.scrolled) .nav-logo, #navbar:not(.scrolled) .nav-links a{color:#fff}
     .hero-left{display:flex;flex-direction:column;justify-content:center;padding:8rem 5rem 7rem;max-width:1200px;margin:0 auto;width:100%}
     .hero-eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--burgundy);margin-bottom:2rem;display:flex;align-items:center;gap:1rem;font-weight:500}
     .hero-eyebrow::before{content:'';display:block;width:3rem;height:1px;background:var(--border)}
@@ -124,10 +134,10 @@
   <nav id="navbar">
     <a href="index.html" class="nav-logo">The Shreya Project</a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="books.html">Books</a></li>
-      <li><a href="gallery.html">Art</a></li>
-      <li><a href="tracker.html">Tracker</a></li>
-      <li><a href="journal.html">Thought Journal</a></li>
+      <li><a href="pages/books.html">Books</a></li>
+      <li><a href="pages/gallery.html">Art</a></li>
+      <li><a href="pages/tracker.html">Tracker</a></li>
+      <li><a href="pages/journal.html">Thought Journal</a></li>
     </ul>
     <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
@@ -192,10 +202,10 @@
         <div class="section-line"></div>
       </div>
       <div class="explore-grid fade-up">
-        <a class="hub-card" href="books.html"><span class="hub-icon">📚</span><div class="hub-title">Books</div><div class="hub-desc">What I'm reading, what I thought, what changed my mind.</div><div class="hub-arrow">Explore →</div></a>
-        <a class="hub-card" href="gallery.html"><span class="hub-icon">🎨</span><div class="hub-title">Art Gallery</div><div class="hub-desc">Paintings, sketches, and experiments in colour.</div><div class="hub-arrow">View Gallery →</div></a>
-        <a class="hub-card" href="tracker.html"><span class="hub-icon">📊</span><div class="hub-title">Activity Tracker</div><div class="hub-desc">Weight, food, movement and building the habit of noticing.</div><div class="hub-arrow">Track →</div></a>
-        <a class="hub-card" href="journal.html"><span class="hub-icon">✍️</span><div class="hub-title">Thought Journal</div><div class="hub-desc">Notes on what I'm learning, building, and figuring out.</div><div class="hub-arrow">Read →</div></a>
+        <a class="hub-card" href="pages/books.html"><span class="hub-icon">📚</span><div class="hub-title">Books</div><div class="hub-desc">What I'm reading, what I thought, what changed my mind.</div><div class="hub-arrow">Explore →</div></a>
+        <a class="hub-card" href="pages/gallery.html"><span class="hub-icon">🎨</span><div class="hub-title">Art Gallery</div><div class="hub-desc">Paintings, sketches, and experiments in colour.</div><div class="hub-arrow">View Gallery →</div></a>
+        <a class="hub-card" href="pages/tracker.html"><span class="hub-icon">📊</span><div class="hub-title">Activity Tracker</div><div class="hub-desc">Weight, food, movement and building the habit of noticing.</div><div class="hub-arrow">Track →</div></a>
+        <a class="hub-card" href="pages/journal.html"><span class="hub-icon">✍️</span><div class="hub-title">Thought Journal</div><div class="hub-desc">Notes on what I'm learning, building, and figuring out.</div><div class="hub-arrow">Read →</div></a>
       </div>
     </div>
   </section>
@@ -213,6 +223,13 @@
         document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
         (function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
         document.addEventListener('mouseover',e=>{e.target.closest('a,button')?ring.classList.add('hover'):ring.classList.remove('hover')});
+        document.addEventListener('mousemove',e=>{
+          const hero=document.getElementById('home');
+          const r=hero.getBoundingClientRect();
+          const inHero=e.clientY>=r.top&&e.clientY<=r.bottom;
+          dot.style.background=inHero?'#fff':'var(--accent)';
+          ring.style.borderColor=inHero?'#fff':'var(--accent)';
+        });
         document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0'});
         document.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='.55'});
       }
