@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books — Shreya's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+  <style>
+    :root{--teal1:#e0f2f1;--teal2:#b2dfdb;--teal3:#e0f7f4;--teal4:#c8e6e3;--teal5:#d4eeeb;--teal6:#e8f5f3;--teal7:#b8deda;--teal8:#ddf0ee;--ink:#1a2e2c;--muted:#4a6b68;--accent:#00796b;--border:#a0ccc8;--card-bg:#f0fafa;--bg1:#e0f2f1;--bg2:#b2dfdb;--bg3:#e0f7f4;--bg4:#e0f2f1;--bg5:#c8e6e3;--bg6:#d4eeeb;--bg7:#e8f5f3;--bg8:#b8deda;--bg9:#ddf0ee;--burgundy:#00796b;--dark-green:#004d40}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{font-family:'Google Sans Flex',sans-serif;font-size:16px;background:var(--teal1);color:var(--ink);overflow-x:hidden;cursor:none}
+    .cursor{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+    .cursor-ring{width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.55;transition:width .3s,height .3s,opacity .3s}
+    .cursor-ring.hover{width:58px;height:58px;opacity:.18}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5rem;display:flex;justify-content:space-between;align-items:center;background:transparent;transition:background .3s,box-shadow .3s}
+    nav.scrolled{background:rgba(224,242,241,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(0,77,64,.12)}
+    .nav-logo{font-size:1rem;font-weight:800;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:600}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+    .container{max-width:1200px;margin:0 auto;padding:0 5rem}
+    section{padding:6rem 0}
+    .section-header{display:flex;align-items:center;gap:2rem;margin-bottom:5rem}
+    .section-number{font-size:.8rem;color:var(--accent);letter-spacing:.04em;flex-shrink:0;font-weight:600}
+    .section-title{font-size:clamp(2rem,3.5vw,3.2rem);font-weight:700;letter-spacing:-.03em;color:var(--ink);white-space:nowrap}
+    .section-line{flex:1;height:1px;background:var(--border)}
+    .btn-primary{background:var(--burgundy);color:#fff;padding:.9rem 2.2rem;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;transition:background .25s,transform .25s;display:inline-block;font-weight:500;border-radius:4px;border:none;cursor:pointer;font-family:'Google Sans Flex',sans-serif}
+    .btn-primary:hover{background:var(--dark-green);transform:translateY(-2px)}
+    .btn-ghost{border:1.5px solid var(--border);color:var(--muted);padding:.9rem 2.2rem;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;transition:border-color .25s,color .25s,transform .25s;display:inline-block;font-weight:500;border-radius:4px;background:transparent;cursor:pointer;font-family:'Google Sans Flex',sans-serif}
+    .btn-ghost:hover{border-color:var(--burgundy);color:var(--burgundy);transform:translateY(-2px)}
+    footer{background:var(--dark-green);color:rgba(178,223,219,.5);padding:2rem 5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+    footer a{color:rgba(178,223,219,.7);text-decoration:none}
+    footer a:hover{color:var(--teal2)}
+    .fade-up{opacity:1;transform:none}
+    .js-animate .fade-up{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+    .js-animate .fade-up.visible{opacity:1;transform:translateY(0)}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+    .nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s,opacity .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-overlay{display:none;position:fixed;inset:0;background:rgba(26,46,44,.35);z-index:98}
+    .nav-overlay.open{display:block}
+
+    /* PAGE SPECIFIC */
+    .page-hero{padding:10rem 0 5rem;background:var(--bg1)}
+    .page-eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--burgundy);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;font-weight:500}
+    .page-eyebrow::before{content:'';display:block;width:3rem;height:1px;background:var(--border)}
+    .page-title{font-size:clamp(3rem,6vw,6rem);font-weight:700;letter-spacing:-.04em;color:var(--ink);line-height:.95;margin-bottom:1.5rem}
+    .page-title em{color:var(--accent);font-style:normal}
+    .page-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:560px}
+    #reading-now{background:var(--bg2)}
+    .current-book{display:grid;grid-template-columns:180px 1fr;gap:3rem;align-items:start;background:var(--card-bg);padding:2.5rem;border:1px solid var(--border)}
+    .book-cover-placeholder{aspect-ratio:2/3;background:linear-gradient(135deg,var(--teal4),var(--bg5));display:flex;align-items:flex-end;padding:1rem;border:1px solid var(--border)}
+    .book-cover-placeholder span{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .current-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;margin-bottom:.75rem}
+    .current-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:.35rem;line-height:1.2}
+    .current-author{font-size:.95rem;color:var(--muted);margin-bottom:1.5rem}
+    .progress-label{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
+    .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:1.5rem}
+    .progress-fill{height:100%;background:var(--accent);border-radius:2px}
+    .current-note{font-size:.95rem;color:var(--muted);line-height:1.75;font-style:italic}
+    #book-log{background:var(--bg3)}
+    .filter-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:3rem}
+    .filter-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:.5rem 1.25rem;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;border-radius:50px;cursor:pointer;font-family:'Google Sans Flex',sans-serif;transition:border-color .2s,color .2s,background .2s}
+    .filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,121,107,.06)}
+    .books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+    .book-card{background:var(--card-bg);padding:2rem;text-decoration:none;display:flex;flex-direction:column;gap:1rem;transition:background .25s;position:relative}
+    .book-card:hover{background:var(--bg2)}
+    .book-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+    .book-card:hover::after{transform:scaleX(1)}
+    .book-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+    .book-genre{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);font-weight:700}
+    .book-rating{display:flex;gap:2px}
+    .star{width:10px;height:10px;background:var(--accent);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+    .star.empty{background:var(--border)}
+    .book-title-card{font-size:1.05rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.3}
+    .book-author-card{font-size:.82rem;color:var(--muted)}
+    .book-excerpt{font-size:.88rem;color:var(--muted);line-height:1.7}
+    .book-read-link{font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-top:auto}
+    .book-read-link::after{content:' →'}
+    .book-date{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    #booklist{background:var(--bg5)}
+    .booklist-intro{font-size:1rem;color:var(--muted);line-height:1.8;max-width:600px;margin-bottom:3rem}
+    .booklist-table{width:100%;border-collapse:collapse}
+    .booklist-table th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;padding:.75rem 1rem;text-align:left;border-bottom:2px solid var(--border)}
+    .booklist-table td{padding:1rem;font-size:.92rem;color:var(--muted);border-bottom:1px solid var(--border);vertical-align:top}
+    .booklist-table tr:hover td{background:rgba(0,121,107,.04)}
+    .booklist-table td:first-child{color:var(--ink);font-weight:600}
+    .tbl-status{display:inline-block;padding:.2rem .6rem;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .tbl-status.read{background:rgba(0,121,107,.12);color:var(--accent)}
+    .tbl-status.reading{background:rgba(0,121,107,.06);color:var(--accent);border:1px solid var(--border)}
+    .tbl-status.want{background:var(--bg4);color:var(--muted);border:1px solid var(--border)}
+
+    @media(max-width:860px){.books-grid{grid-template-columns:repeat(2,1fr)}.current-book{grid-template-columns:120px 1fr;gap:1.5rem}.section-title{white-space:normal;font-size:clamp(1.6rem,5vw,2.5rem)}footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.5rem}}
+    @media(max-width:580px){.books-grid{grid-template-columns:1fr}.current-book{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav id="navbar">
+    <a href="../index.html" class="nav-logo">Shreya's Garden 🌱</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="books.html" class="active">Books</a></li>
+      <li><a href="gallery.html">Art</a></li>
+      <li><a href="tracker.html">Tracker</a></li>
+      <li><a href="journal.html">Journal</a></li>
+    </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-eyebrow">Reading Log</div>
+      <h1 class="page-title">Books I've<br /><em>Read</em></h1>
+      <p class="page-desc">Honest reviews, half-formed thoughts, and the occasional change of opinion. Fiction, nonfiction, philosophy, and whatever I couldn't put down at 2am.</p>
+    </div>
+  </div>
+
+  <section id="reading-now">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">NOW</span><h2 class="section-title">Currently Reading</h2><div class="section-line"></div></div>
+      <div class="current-book fade-up">
+        <div class="book-cover-placeholder"><span>Add cover image</span></div>
+        <div>
+          <div class="current-label">Reading now · Started June 2026</div>
+          <div class="current-title">The Brothers Karamazov</div>
+          <div class="current-author">Fyodor Dostoevsky · trans. Richard Pevear</div>
+          <div class="progress-label">Progress — 38%</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:38%"></div></div>
+          <p class="current-note">"I've been putting this one off for years because of the reputation. It's nothing like I expected — less grim, far funnier, and Alyosha is already one of my favourite characters in any book."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="book-log">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">LOG</span><h2 class="section-title">Reviews</h2><div class="section-line"></div></div>
+      <div class="filter-row fade-up">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Fiction</button>
+        <button class="filter-btn">Nonfiction</button>
+        <button class="filter-btn">Philosophy</button>
+        <button class="filter-btn">Tech</button>
+        <button class="filter-btn">Biography</button>
+      </div>
+      <div class="books-grid fade-up">
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Fiction</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div></div><div class="book-title-card">The Metamorphosis</div><div class="book-author-card">Franz Kafka</div><p class="book-excerpt">What stayed with me wasn't the horror of the transformation but the family's slow accommodation to it — how we adjust to making people smaller than they are.</p><div class="book-date">Read · May 2026</div><div class="book-read-link">Read Review</div></a>
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Nonfiction</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div></div></div><div class="book-title-card">Thinking, Fast and Slow</div><div class="book-author-card">Daniel Kahneman</div><p class="book-excerpt">It rewired how I think about A/B tests at work. System 1 and System 2 isn't just pop-psych shorthand — Kahneman earns every claim he makes.</p><div class="book-date">Read · April 2026</div><div class="book-read-link">Read Review</div></a>
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Biography</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div></div></div><div class="book-title-card">The Diary of a Young Girl</div><div class="book-author-card">Anne Frank</div><p class="book-excerpt">I read this as a teenager and missed most of it. Reading it now as someone who also keeps a journal — the ambition, the vanity, the contradictions — it hit completely differently.</p><div class="book-date">Read · March 2026</div><div class="book-read-link">Read Review</div></a>
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Philosophy</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div></div><div class="book-title-card">Meditations</div><div class="book-author-card">Marcus Aurelius</div><p class="book-excerpt">A private journal published two thousand years later. It shouldn't work and it completely does. I underlined so many pages that the book barely closes now.</p><div class="book-date">Read · February 2026</div><div class="book-read-link">Read Review</div></a>
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Fiction</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div></div></div><div class="book-title-card">Convenience Store Woman</div><div class="book-author-card">Sayaka Murata</div><p class="book-excerpt">This one unsettled me in ways I'm still untangling. The protagonist is described as broken — but reading it, you wonder who's really uncomfortable with whom.</p><div class="book-date">Read · January 2026</div><div class="book-read-link">Read Review</div></a>
+        <a class="book-card" href="#"><div class="book-meta"><span class="book-genre">Tech</span><div class="book-rating"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div><div class="star empty"></div></div></div><div class="book-title-card">The Innovators</div><div class="book-author-card">Walter Isaacson</div><p class="book-excerpt">Ada Lovelace → the internet in 500 pages. The recurring theme — that breakthroughs are collaborative, not singular — is one I keep coming back to at work.</p><div class="book-date">Read · December 2025</div><div class="book-read-link">Read Review</div></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="booklist">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">LIST</span><h2 class="section-title">Full Booklist</h2><div class="section-line"></div></div>
+      <p class="booklist-intro fade-up">Every book I've read, am reading, or want to read. Updated as I go.</p>
+      <table class="booklist-table fade-up">
+        <thead><tr><th>Title</th><th>Author</th><th>Genre</th><th>Status</th><th>Year</th></tr></thead>
+        <tbody>
+          <tr><td>The Brothers Karamazov</td><td>Fyodor Dostoevsky</td><td>Fiction</td><td><span class="tbl-status reading">Reading</span></td><td>2026</td></tr>
+          <tr><td>The Metamorphosis</td><td>Franz Kafka</td><td>Fiction</td><td><span class="tbl-status read">Read ✓</span></td><td>2026</td></tr>
+          <tr><td>Thinking, Fast and Slow</td><td>Daniel Kahneman</td><td>Nonfiction</td><td><span class="tbl-status read">Read ✓</span></td><td>2026</td></tr>
+          <tr><td>Meditations</td><td>Marcus Aurelius</td><td>Philosophy</td><td><span class="tbl-status read">Read ✓</span></td><td>2026</td></tr>
+          <tr><td>The Diary of a Young Girl</td><td>Anne Frank</td><td>Biography</td><td><span class="tbl-status read">Read ✓</span></td><td>2026</td></tr>
+          <tr><td>Convenience Store Woman</td><td>Sayaka Murata</td><td>Fiction</td><td><span class="tbl-status read">Read ✓</span></td><td>2026</td></tr>
+          <tr><td>The Innovators</td><td>Walter Isaacson</td><td>Tech</td><td><span class="tbl-status read">Read ✓</span></td><td>2025</td></tr>
+          <tr><td>Normal People</td><td>Sally Rooney</td><td>Fiction</td><td><span class="tbl-status want">Want to Read</span></td><td>—</td></tr>
+          <tr><td>The Remains of the Day</td><td>Kazuo Ishiguro</td><td>Fiction</td><td><span class="tbl-status want">Want to Read</span></td><td>—</td></tr>
+          <tr><td>Behave</td><td>Robert Sapolsky</td><td>Science</td><td><span class="tbl-status want">Want to Read</span></td><td>—</td></tr>
+          <tr><td>The God of Small Things</td><td>Arundhati Roy</td><td>Fiction</td><td><span class="tbl-status want">Want to Read</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Shreya Bhattacharya</span><a href="../index.html">← Back to Garden</a></footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      const dot=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+      if(dot&&ring){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});(function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();document.addEventListener('mouseover',e=>{e.target.closest('a,button')?ring.classList.add('hover'):ring.classList.remove('hover')});document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0'});document.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='.55'})}
+      window.addEventListener('scroll',()=>{const n=document.getElementById('navbar');if(n)n.classList.toggle('scrolled',scrollY>60)});
+      const btn=document.getElementById('navHamburger'),links=document.getElementById('navLinks'),ov=document.getElementById('navOverlay');
+      if(btn){function tog(o){btn.classList.toggle('open',o);links.classList.toggle('open',o);if(ov)ov.classList.toggle('open',o);document.body.style.overflow=o?'hidden':''}btn.addEventListener('click',()=>tog(!links.classList.contains('open')));if(ov)ov.addEventListener('click',()=>tog(false));links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>tog(false)))}
+      document.documentElement.classList.add('js-animate');
+      const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px -20px 0px'});
+      document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+      document.querySelectorAll('.filter-btn').forEach(btn=>{btn.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')})});
+    });
+  </script>
+</body>
+</html>

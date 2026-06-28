@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Tracker — Shreya's Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+  <style>
+    :root{--teal1:#e0f2f1;--teal2:#b2dfdb;--teal4:#c8e6e3;--ink:#1a2e2c;--muted:#4a6b68;--accent:#00796b;--border:#a0ccc8;--card-bg:#f0fafa;--bg1:#e0f2f1;--bg2:#b2dfdb;--bg3:#e0f7f4;--bg4:#e0f2f1;--bg5:#c8e6e3;--bg6:#d4eeeb;--burgundy:#00796b;--dark-green:#004d40}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{font-family:'Google Sans Flex',sans-serif;font-size:16px;background:var(--teal1);color:var(--ink);overflow-x:hidden;cursor:none}
+    .cursor{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+    .cursor-ring{width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.55;transition:width .3s,height .3s,opacity .3s}
+    .cursor-ring.hover{width:58px;height:58px;opacity:.18}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5rem;display:flex;justify-content:space-between;align-items:center;background:transparent;transition:background .3s,box-shadow .3s}
+    nav.scrolled{background:rgba(224,242,241,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(0,77,64,.12)}
+    .nav-logo{font-size:1rem;font-weight:800;color:var(--ink);text-decoration:none}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:600}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+    .container{max-width:1200px;margin:0 auto;padding:0 5rem}
+    section{padding:6rem 0}
+    .section-header{display:flex;align-items:center;gap:2rem;margin-bottom:5rem}
+    .section-number{font-size:.8rem;color:var(--accent);letter-spacing:.04em;flex-shrink:0;font-weight:600}
+    .section-title{font-size:clamp(2rem,3.5vw,3.2rem);font-weight:700;letter-spacing:-.03em;color:var(--ink);white-space:nowrap}
+    .section-line{flex:1;height:1px;background:var(--border)}
+    .btn-primary{background:var(--burgundy);color:#fff;padding:.9rem 2.2rem;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;transition:background .25s,transform .25s;display:inline-block;font-weight:500;border-radius:4px;border:none;cursor:pointer;font-family:'Google Sans Flex',sans-serif}
+    .btn-primary:hover{background:var(--dark-green);transform:translateY(-2px)}
+    footer{background:var(--dark-green);color:rgba(178,223,219,.5);padding:2rem 5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+    footer a{color:rgba(178,223,219,.7);text-decoration:none}
+    footer a:hover{color:var(--teal2)}
+    .fade-up{opacity:1;transform:none}
+    .js-animate .fade-up{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+    .js-animate .fade-up.visible{opacity:1;transform:translateY(0)}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+    .nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s,opacity .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-overlay{display:none;position:fixed;inset:0;background:rgba(26,46,44,.35);z-index:98}
+    .nav-overlay.open{display:block}
+
+    .page-hero{padding:10rem 0 5rem;background:var(--bg1)}
+    .page-eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--burgundy);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;font-weight:500}
+    .page-eyebrow::before{content:'';display:block;width:3rem;height:1px;background:var(--border)}
+    .page-title{font-size:clamp(3rem,6vw,6rem);font-weight:700;letter-spacing:-.04em;color:var(--ink);line-height:.95;margin-bottom:1.5rem}
+    .page-title em{color:var(--accent);font-style:normal}
+    .page-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:560px}
+    #log-entry{background:var(--bg2)}
+    .entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+    .entry-card{background:var(--card-bg);border:1px solid var(--border);padding:2rem;margin-bottom:2px}
+    .entry-card h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:1.5rem;font-weight:700}
+    .form-row{margin-bottom:1.25rem}
+    .form-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;display:block;margin-bottom:.45rem}
+    .form-input{width:100%;background:var(--bg1);border:1.5px solid var(--border);color:var(--ink);padding:.75rem 1rem;font-family:'Google Sans Flex',sans-serif;font-size:.95rem;border-radius:4px;outline:none;transition:border-color .2s}
+    .form-input:focus{border-color:var(--accent)}
+    .macro-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+    .macro-input-wrap{display:flex;flex-direction:column;gap:.4rem}
+    .macro-input-wrap .form-input{text-align:center;padding:.6rem}
+    .activity-options{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.25rem}
+    .activity-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:.4rem .9rem;font-size:.78rem;letter-spacing:.02em;font-weight:600;border-radius:50px;cursor:pointer;font-family:'Google Sans Flex',sans-serif;transition:all .2s}
+    .activity-btn.selected,.activity-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,121,107,.08)}
+    .mood-row{display:flex;gap:1rem}
+    .mood-btn{font-size:1.5rem;background:transparent;border:1.5px solid transparent;padding:.5rem;border-radius:50%;cursor:pointer;transition:border-color .2s,transform .2s}
+    .mood-btn.selected,.mood-btn:hover{border-color:var(--accent);transform:scale(1.15)}
+    .save-confirm{display:none;text-align:center;font-size:.88rem;color:var(--accent);font-weight:600;margin-top:.75rem}
+    #overview{background:var(--bg3)}
+    .stats-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--border);margin-bottom:3rem}
+    .stat-tile{background:var(--card-bg);padding:1.75rem 1.5rem}
+    .stat-tile-num{font-size:2rem;font-weight:800;color:var(--accent);letter-spacing:-.04em;line-height:1}
+    .stat-tile-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-top:.4rem;font-weight:500}
+    .stat-tile-sub{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+    .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+    .chart-wrap{background:var(--bg1);border:1px solid var(--border);padding:2rem;border-radius:4px}
+    .chart-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;margin-bottom:1.5rem}
+    .chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px}
+    .chart-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .chart-bar{width:28px;background:var(--accent);border-radius:3px 3px 0 0;transition:opacity .2s}
+    .chart-bar:hover{opacity:1!important}
+    .chart-bar-label{font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .chart-note{font-size:.75rem;color:var(--muted);margin-top:.75rem}
+    #log-table{background:var(--bg5)}
+    .log-table{width:100%;border-collapse:collapse}
+    .log-table th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;padding:.75rem 1rem;text-align:left;border-bottom:2px solid var(--border)}
+    .log-table td{padding:.9rem 1rem;font-size:.88rem;color:var(--muted);border-bottom:1px solid var(--border)}
+    .log-table tr:hover td{background:rgba(0,121,107,.03)}
+    .log-table td:first-child{color:var(--ink);font-weight:600}
+    .mp{display:inline-block;padding:.15rem .5rem;border-radius:2px;font-size:.7rem;font-weight:700;margin-right:.25rem}
+    .mp.kcal{background:rgba(0,121,107,.12);color:var(--accent)}
+    .mp.prot{background:rgba(178,223,219,.5);color:var(--dark-green)}
+    .mp.sug{background:rgba(255,220,150,.4);color:#7a5800}
+    .mp.fib{background:rgba(200,230,227,.6);color:var(--dark-green)}
+    .act-tag{background:var(--bg4);color:var(--muted);padding:.2rem .6rem;border-radius:20px;font-size:.7rem;font-weight:600}
+
+    @media(max-width:860px){.entry-grid{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(3,1fr)}.charts-grid{grid-template-columns:1fr}.section-title{white-space:normal;font-size:clamp(1.6rem,5vw,2.5rem)}footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.5rem}}
+    @media(max-width:580px){.stats-strip{grid-template-columns:repeat(2,1fr)}.macro-row{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav id="navbar">
+    <a href="../index.html" class="nav-logo">Shreya's Garden 🌱</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="books.html">Books</a></li>
+      <li><a href="gallery.html">Art</a></li>
+      <li><a href="tracker.html" class="active">Tracker</a></li>
+      <li><a href="journal.html">Journal</a></li>
+    </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-eyebrow">Daily Log</div>
+      <h1 class="page-title">Activity<br /><em>Tracker</em></h1>
+      <p class="page-desc">Weight, food, movement, mood. Noticing is half the work. Tracking creates the mirror — I just have to look at it honestly.</p>
+    </div>
+  </div>
+
+  <section id="log-entry">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">LOG</span><h2 class="section-title">Today's Entry</h2><div class="section-line"></div></div>
+      <div class="entry-grid fade-up">
+        <div>
+          <div class="entry-card">
+            <h3>Body</h3>
+            <div class="form-row"><label class="form-label">Date</label><input type="date" class="form-input" id="entry-date"></div>
+            <div class="form-row"><label class="form-label">Weight (kg)</label><input type="number" class="form-input" placeholder="e.g. 58.5" id="entry-weight" step="0.1"></div>
+            <div class="form-row"><label class="form-label">Sleep (hours)</label><input type="number" class="form-input" placeholder="e.g. 7.5" id="entry-sleep" step="0.5"></div>
+            <div class="form-row"><label class="form-label">Water (litres)</label><input type="number" class="form-input" placeholder="e.g. 2.0" id="entry-water" step="0.25"></div>
+          </div>
+          <div class="entry-card">
+            <h3>Mood</h3>
+            <div class="form-label">How are you feeling?</div>
+            <div class="mood-row">
+              <button class="mood-btn" onclick="selMood(this,'great')" title="Great">😄</button>
+              <button class="mood-btn" onclick="selMood(this,'good')" title="Good">🙂</button>
+              <button class="mood-btn" onclick="selMood(this,'okay')" title="Okay">😐</button>
+              <button class="mood-btn" onclick="selMood(this,'tired')" title="Tired">😴</button>
+              <button class="mood-btn" onclick="selMood(this,'stressed')" title="Stressed">😰</button>
+              <button class="mood-btn" onclick="selMood(this,'low')" title="Low">😔</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="entry-card">
+            <h3>Nutrition</h3>
+            <div class="form-row">
+              <label class="form-label">Macros</label>
+              <div class="macro-row">
+                <div class="macro-input-wrap"><label class="form-label">Calories</label><input type="number" class="form-input" placeholder="kcal" id="entry-kcal"></div>
+                <div class="macro-input-wrap"><label class="form-label">Protein g</label><input type="number" class="form-input" placeholder="g" id="entry-protein"></div>
+                <div class="macro-input-wrap"><label class="form-label">Sugar g</label><input type="number" class="form-input" placeholder="g" id="entry-sugar"></div>
+                <div class="macro-input-wrap"><label class="form-label">Fibre g</label><input type="number" class="form-input" placeholder="g" id="entry-fibre"></div>
+              </div>
+            </div>
+            <div class="form-row"><label class="form-label">What did you eat today?</label><textarea class="form-input" rows="3" placeholder="Breakfast, lunch, dinner, snacks…" id="entry-food" style="resize:vertical"></textarea></div>
+          </div>
+          <div class="entry-card">
+            <h3>Activity</h3>
+            <div class="form-row">
+              <label class="form-label">Type of activity</label>
+              <div class="activity-options" id="act-opts">
+                <button class="activity-btn" onclick="togAct(this)">Walk</button>
+                <button class="activity-btn" onclick="togAct(this)">Run</button>
+                <button class="activity-btn" onclick="togAct(this)">Yoga</button>
+                <button class="activity-btn" onclick="togAct(this)">Gym</button>
+                <button class="activity-btn" onclick="togAct(this)">Swim</button>
+                <button class="activity-btn" onclick="togAct(this)">Cycle</button>
+                <button class="activity-btn" onclick="togAct(this)">Dance</button>
+                <button class="activity-btn" onclick="togAct(this)">Rest day</button>
+              </div>
+            </div>
+            <div class="form-row"><label class="form-label">Duration (minutes)</label><input type="number" class="form-input" placeholder="e.g. 30" id="entry-dur"></div>
+            <div class="form-row"><label class="form-label">Notes</label><textarea class="form-input" rows="2" placeholder="Anything worth noting…" id="entry-notes" style="resize:vertical"></textarea></div>
+            <button class="btn-primary" style="width:100%;margin-top:1rem" onclick="saveEntry()">Save Today's Entry</button>
+            <div class="save-confirm" id="save-conf">✓ Saved!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="overview">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">STATS</span><h2 class="section-title">This Week</h2><div class="section-line"></div></div>
+      <div class="stats-strip fade-up">
+        <div class="stat-tile"><div class="stat-tile-num" id="s-weight">—</div><div class="stat-tile-label">Avg Weight (kg)</div><div class="stat-tile-sub">This week</div></div>
+        <div class="stat-tile"><div class="stat-tile-num" id="s-kcal">—</div><div class="stat-tile-label">Avg Calories</div><div class="stat-tile-sub">Per day logged</div></div>
+        <div class="stat-tile"><div class="stat-tile-num" id="s-protein">—</div><div class="stat-tile-label">Avg Protein (g)</div><div class="stat-tile-sub">Per day logged</div></div>
+        <div class="stat-tile"><div class="stat-tile-num" id="s-active">—</div><div class="stat-tile-label">Active Days</div><div class="stat-tile-sub">This week</div></div>
+        <div class="stat-tile"><div class="stat-tile-num" id="s-sleep">—</div><div class="stat-tile-label">Avg Sleep (hrs)</div><div class="stat-tile-sub">This week</div></div>
+      </div>
+      <div class="charts-grid fade-up">
+        <div class="chart-wrap"><div class="chart-title">Weight trend — last 7 days</div><div class="chart-bars"><div class="chart-bar-wrap"><div class="chart-bar" style="height:70px;opacity:.7"></div><span class="chart-bar-label">Mon</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:68px;opacity:.7"></div><span class="chart-bar-label">Tue</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:72px;opacity:.7"></div><span class="chart-bar-label">Wed</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:70px;opacity:.7"></div><span class="chart-bar-label">Thu</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:66px;opacity:.7"></div><span class="chart-bar-label">Fri</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:64px;opacity:.3"></div><span class="chart-bar-label">Sat</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:40px;opacity:.15"></div><span class="chart-bar-label">Sun</span></div></div><div class="chart-note">Log entries to populate real data</div></div>
+        <div class="chart-wrap"><div class="chart-title">Calories — last 7 days</div><div class="chart-bars"><div class="chart-bar-wrap"><div class="chart-bar" style="height:85px;background:var(--teal2);opacity:.7"></div><span class="chart-bar-label">Mon</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:60px;background:var(--teal2);opacity:.7"></div><span class="chart-bar-label">Tue</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:95px;background:var(--teal2);opacity:.7"></div><span class="chart-bar-label">Wed</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:75px;background:var(--teal2);opacity:.7"></div><span class="chart-bar-label">Thu</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:80px;background:var(--teal2);opacity:.7"></div><span class="chart-bar-label">Fri</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:50px;background:var(--teal2);opacity:.3"></div><span class="chart-bar-label">Sat</span></div><div class="chart-bar-wrap"><div class="chart-bar" style="height:30px;background:var(--teal2);opacity:.15"></div><span class="chart-bar-label">Sun</span></div></div><div class="chart-note">Log entries to populate real data</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="log-table">
+    <div class="container">
+      <div class="section-header fade-up"><span class="section-number">HISTORY</span><h2 class="section-title">Log History</h2><div class="section-line"></div></div>
+      <table class="log-table fade-up">
+        <thead><tr><th>Date</th><th>Weight</th><th>Nutrition</th><th>Activity</th><th>Sleep</th><th>Mood</th></tr></thead>
+        <tbody id="log-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted)">No entries yet. Log your first day above!</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Shreya Bhattacharya</span><a href="../index.html">← Back to Garden</a></footer>
+
+  <script>
+    var selMoodVal='',selActs=[];
+    function selMood(btn,m){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selMoodVal=m}
+    function togAct(btn){btn.classList.toggle('selected');var a=btn.textContent;selActs=btn.classList.contains('selected')?[...selActs,a]:selActs.filter(x=>x!==a)}
+    function getE(){try{return JSON.parse(localStorage.getItem('sgTracker')||'[]')}catch{return[]}}
+    function setE(d){try{localStorage.setItem('sgTracker',JSON.stringify(d))}catch{}}
+    function saveEntry(){
+      var e={date:document.getElementById('entry-date').value,weight:document.getElementById('entry-weight').value,sleep:document.getElementById('entry-sleep').value,water:document.getElementById('entry-water').value,kcal:document.getElementById('entry-kcal').value,protein:document.getElementById('entry-protein').value,sugar:document.getElementById('entry-sugar').value,fibre:document.getElementById('entry-fibre').value,food:document.getElementById('entry-food').value,acts:selActs.slice(),dur:document.getElementById('entry-dur').value,notes:document.getElementById('entry-notes').value,mood:selMoodVal};
+      if(!e.date){alert('Please select a date.');return}
+      var arr=getE(),idx=arr.findIndex(x=>x.date===e.date);
+      if(idx>=0)arr[idx]=e;else arr.unshift(e);
+      setE(arr);renderTable(arr);updateStats(arr);
+      var c=document.getElementById('save-conf');c.style.display='block';setTimeout(()=>c.style.display='none',2500);
+    }
+    function renderTable(arr){
+      var tb=document.getElementById('log-tbody');
+      if(!arr.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted)">No entries yet. Log your first day above!</td></tr>';return}
+      var em={great:'😄',good:'🙂',okay:'😐',tired:'😴',stressed:'😰',low:'😔'};
+      tb.innerHTML=arr.slice(0,20).map(e=>{
+        var nut=[e.kcal?'<span class="mp kcal">'+e.kcal+' kcal</span>':'',e.protein?'<span class="mp prot">P:'+e.protein+'g</span>':'',e.sugar?'<span class="mp sug">S:'+e.sugar+'g</span>':'',e.fibre?'<span class="mp fib">F:'+e.fibre+'g</span>':''].filter(Boolean).join('');
+        var acts=(e.acts||[]).map(a=>'<span class="act-tag">'+a+'</span>').join(' ');
+        return'<tr><td>'+e.date+'</td><td>'+(e.weight?e.weight+' kg':'—')+'</td><td>'+(nut||'—')+'</td><td>'+(acts||'—')+(e.dur?' <span style="font-size:.75rem;color:var(--muted)">'+e.dur+'min</span>':'')+'</td><td>'+(e.sleep?e.sleep+'h':'—')+'</td><td>'+(em[e.mood]||'—')+'</td></tr>';
+      }).join('');
+    }
+    function updateStats(arr){
+      var r=arr.slice(0,7);
+      function avg(k){var v=r.map(e=>parseFloat(e[k])).filter(x=>!isNaN(x));return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):'—'}
+      document.getElementById('s-weight').textContent=avg('weight');
+      document.getElementById('s-kcal').textContent=avg('kcal');
+      document.getElementById('s-protein').textContent=avg('protein');
+      document.getElementById('s-sleep').textContent=avg('sleep');
+      document.getElementById('s-active').textContent=r.filter(e=>e.acts&&e.acts.length&&!e.acts.includes('Rest day')).length||'—';
+    }
+    document.addEventListener('DOMContentLoaded',function(){
+      document.getElementById('entry-date').value=new Date().toISOString().split('T')[0];
+      var saved=getE();renderTable(saved);updateStats(saved);
+      const dot=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+      if(dot&&ring){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});(function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();document.addEventListener('mouseover',e=>{e.target.closest('a,button,input,textarea')?ring.classList.add('hover'):ring.classList.remove('hover')});document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0'});document.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='.55'})}
+      window.addEventListener('scroll',()=>{const n=document.getElementById('navbar');if(n)n.classList.toggle('scrolled',scrollY>60)});
+      const btn=document.getElementById('navHamburger'),links=document.getElementById('navLinks'),ov=document.getElementById('navOverlay');
+      if(btn){function tog(o){btn.classList.toggle('open',o);links.classList.toggle('open',o);if(ov)ov.classList.toggle('open',o);document.body.style.overflow=o?'hidden':''}btn.addEventListener('click',()=>tog(!links.classList.contains('open')));if(ov)ov.addEventListener('click',()=>tog(false));links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>tog(false)))}
+      document.documentElement.classList.add('js-animate');
+      const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px -20px 0px'});
+      document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+    });
+  </script>
+</body>
+</html>
