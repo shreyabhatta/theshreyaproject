@@ -2,140 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Journal — Shreya's Garden</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Thought Journal — The Shreya Project</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
   <style>
-    :root{--teal1:#e0f2f1;--teal2:#b2dfdb;--teal4:#c8e6e3;--ink:#1a2e2c;--muted:#4a6b68;--accent:#00796b;--border:#a0ccc8;--card-bg:#f0fafa;--bg1:#e0f2f1;--bg2:#b2dfdb;--bg3:#e0f7f4;--bg4:#e0f2f1;--bg5:#c8e6e3;--bg6:#d4eeeb;--bg7:#e8f5f3;--burgundy:#00796b;--dark-green:#004d40}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth;overflow-x:hidden}
-    body{font-family:'Google Sans Flex',sans-serif;font-size:16px;background:var(--teal1);color:var(--ink);overflow-x:hidden;cursor:none}
-    .cursor{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
-    .cursor-ring{width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.55;transition:width .3s,height .3s,opacity .3s}
-    .cursor-ring.hover{width:58px;height:58px;opacity:.18}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5rem;display:flex;justify-content:space-between;align-items:center;background:transparent;transition:background .3s,box-shadow .3s}
-    nav.scrolled{background:rgba(224,242,241,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(0,77,64,.12)}
+    :root{--teal1:#e0f2f1;--ink:#1a2e2c;--muted:#4a6b68;--accent:#00796b;--border:#a0ccc8;--dark-green:#004d40}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Google Sans Flex',sans-serif;background:var(--teal1);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+    nav{padding:1.2rem 5rem;display:flex;justify-content:space-between;align-items:center}
     .nav-logo{font-size:1rem;font-weight:800;color:var(--ink);text-decoration:none}
-    .nav-links{display:flex;gap:2.5rem;list-style:none}
-    .nav-links a{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:600}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
-    .container{max-width:1200px;margin:0 auto;padding:0 5rem}
-    section{padding:6rem 0}
-    .section-header{display:flex;align-items:center;gap:2rem;margin-bottom:5rem}
-    .section-number{font-size:.8rem;color:var(--accent);letter-spacing:.04em;flex-shrink:0;font-weight:600}
-    .section-title{font-size:clamp(2rem,3.5vw,3.2rem);font-weight:700;letter-spacing:-.03em;color:var(--ink);white-space:nowrap}
-    .section-line{flex:1;height:1px;background:var(--border)}
-    .btn-primary{background:var(--burgundy);color:#fff;padding:.9rem 2.2rem;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;transition:background .25s,transform .25s;display:inline-block;font-weight:500;border-radius:4px;border:none;cursor:pointer;font-family:'Google Sans Flex',sans-serif}
-    .btn-primary:hover{background:var(--dark-green);transform:translateY(-2px)}
-    footer{background:var(--dark-green);color:rgba(178,223,219,.5);padding:2rem 5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+    main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem}
+    h1{font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-.03em;margin-bottom:1rem}
+    p{font-size:1rem;color:var(--muted);margin-bottom:2rem}
+    a.back{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);text-decoration:none;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:.2rem}
+    footer{background:var(--dark-green);color:rgba(178,223,219,.5);padding:1.5rem 5rem;font-size:.8rem;display:flex;justify-content:space-between}
     footer a{color:rgba(178,223,219,.7);text-decoration:none}
-    footer a:hover{color:var(--teal2)}
-    .fade-up{opacity:1;transform:none}
-    .js-animate .fade-up{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
-    .js-animate .fade-up.visible{opacity:1;transform:translateY(0)}
-    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
-    .nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s,opacity .3s}
-    .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .nav-hamburger.open span:nth-child(2){opacity:0}
-    .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-    .nav-overlay{display:none;position:fixed;inset:0;background:rgba(26,46,44,.35);z-index:98}
-    .nav-overlay.open{display:block}
-
-    .page-hero{padding:10rem 0 5rem;background:var(--bg1)}
-    .page-eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--burgundy);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;font-weight:500}
-    .page-eyebrow::before{content:'';display:block;width:3rem;height:1px;background:var(--border)}
-    .page-title{font-size:clamp(3rem,6vw,6rem);font-weight:700;letter-spacing:-.04em;color:var(--ink);line-height:.95;margin-bottom:1.5rem}
-    .page-title em{color:var(--accent);font-style:normal}
-    .page-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:560px}
-    #journal-feed{background:var(--bg2)}
-    .journal-layout{display:grid;grid-template-columns:1fr 320px;gap:5rem}
-    .entry-list{display:flex;flex-direction:column;gap:2px;background:var(--border)}
-    .journal-entry{background:var(--card-bg);padding:2.5rem;text-decoration:none;display:block;transition:background .25s;position:relative}
-    .journal-entry:hover{background:var(--bg2)}
-    .journal-entry::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transform-origin:top;transition:transform .4s}
-    .journal-entry:hover::after{transform:scaleY(1)}
-    .entry-date-tag{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
-    .entry-tag{background:rgba(0,121,107,.1);border:1px solid var(--border);color:var(--accent);padding:.15rem .55rem;border-radius:20px;font-size:.65rem;letter-spacing:.04em;font-weight:700}
-    .entry-title{font-size:1.2rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:.75rem;line-height:1.3}
-    .entry-preview{font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:1.25rem}
-    .entry-footer{display:flex;justify-content:space-between;align-items:center}
-    .entry-read-link{font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600}
-    .entry-read-link::after{content:' →'}
-    .entry-mins{font-size:.72rem;color:var(--muted)}
-    .journal-sidebar{position:sticky;top:2rem;align-self:start}
-    .sidebar-card{background:var(--card-bg);border:1px solid var(--border);padding:1.75rem;margin-bottom:1.5rem}
-    .sidebar-card h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:1.25rem;font-weight:700}
-    .tag-cloud{display:flex;flex-wrap:wrap;gap:.5rem}
-    .tag-chip{background:var(--bg1);border:1.5px solid var(--border);color:var(--muted);padding:.3rem .8rem;font-size:.75rem;border-radius:50px;cursor:pointer;font-weight:600;transition:border-color .2s,color .2s}
-    .tag-chip:hover{border-color:var(--accent);color:var(--accent)}
-    .month-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
-    .month-list li{display:flex;justify-content:space-between;font-size:.88rem}
-    .month-list a{color:var(--muted);text-decoration:none;transition:color .2s}
-    .month-list a:hover{color:var(--accent)}
-    .month-count{font-size:.75rem;color:var(--accent);font-weight:700}
-    .substack-cta{background:var(--bg3);border:1px solid var(--border);padding:1.75rem;text-align:center}
-    .substack-cta p{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.25rem}
-
-    @media(max-width:1100px){.journal-layout{grid-template-columns:1fr}.journal-sidebar{position:static}}
-    @media(max-width:860px){.section-title{white-space:normal;font-size:clamp(1.6rem,5vw,2.5rem)}footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.5rem}}
   </style>
 </head>
 <body>
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-  <div class="nav-overlay" id="navOverlay"></div>
-  <nav id="navbar">
-    <a href="../index.html" class="nav-logo">Shreya's Garden 🌱</a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="books.html">Books</a></li>
-      <li><a href="gallery.html">Art</a></li>
-      <li><a href="tracker.html">Tracker</a></li>
-      <li><a href="journal.html" class="active">Journal</a></li>
-    </ul>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </nav>
-
-  <div class="page-hero">
-    <div class="container">
-      <div class="page-eyebrow">Writing &amp; Reflections</div>
-      <h1 class="page-title">The<br /><em>Journal</em></h1>
-      <p class="page-desc">Notes on what I'm learning, building, figuring out, and occasionally getting wrong. Some goes to Substack, some stays here — the rougher stuff.</p>
-    </div>
-  </div>
-
-  <section id="journal-feed">
-    <div class="container">
-      <div class="section-header fade-up"><span class="section-number">ENTRIES</span><h2 class="section-title">Recent Entries</h2><div class="section-line"></div></div>
-      <div class="journal-layout">
-        <div class="entry-list fade-up">
-          <a class="journal-entry" href="#"><div class="entry-date-tag">June 28, 2026 &nbsp;<span class="entry-tag">Reflection</span><span class="entry-tag">25 Things</span></div><div class="entry-title">Why I'm doing this publicly (and why that scares me)</div><p class="entry-preview">There's something nakedly optimistic about starting a public improvement project. It assumes you'll change, that change is worth documenting, and that anyone would want to watch. All three feel presumptuous. I'm doing it anyway.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">4 min read</span></div></a>
-          <a class="journal-entry" href="#"><div class="entry-date-tag">June 15, 2026 &nbsp;<span class="entry-tag">Work</span><span class="entry-tag">Product</span></div><div class="entry-title">What a year at Zomato taught me about making decisions with incomplete data</div><p class="entry-preview">You're never going to have enough signal. The teams that ship well aren't the ones with better data — they're the ones that got comfortable making directional bets quickly and correcting faster than they got attached.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">6 min read</span></div></a>
-          <a class="journal-entry" href="#"><div class="entry-date-tag">June 2, 2026 &nbsp;<span class="entry-tag">Books</span><span class="entry-tag">Philosophy</span></div><div class="entry-title">Reading Meditations as a product analyst</div><p class="entry-preview">Aurelius writes to himself. A lot of it is repetition — don't be pulled by appetite, remember you'll die, focus only on what you control. But there's something about the deliberate repetition. He's not recording insights. He's practicing.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">5 min read</span></div></a>
-          <a class="journal-entry" href="#"><div class="entry-date-tag">May 20, 2026 &nbsp;<span class="entry-tag">Habits</span><span class="entry-tag">Health</span></div><div class="entry-title">One month of logging food — here's what actually changed</div><p class="entry-preview">I expected the data to show I was eating badly. I was right. But the more interesting outcome was what noticing did to the behaviour before I changed anything. The act of recording is itself a decision-point.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">4 min read</span></div></a>
-          <a class="journal-entry" href="#"><div class="entry-date-tag">May 5, 2026 &nbsp;<span class="entry-tag">Art</span><span class="entry-tag">25 Things</span></div><div class="entry-title">I finished a painting. It took three months and twelve failed attempts.</div><p class="entry-preview">The thing about starting a lot of paintings and not finishing them is that you can hide behind the potential of what they might be. Finishing means accepting what they are. That gap between vision and execution is the actual thing to get comfortable with.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">3 min read</span></div></a>
-          <a class="journal-entry" href="#"><div class="entry-date-tag">April 18, 2026 &nbsp;<span class="entry-tag">Language</span><span class="entry-tag">Learning</span></div><div class="entry-title">Learning German at 24: what's harder than I expected, what surprised me</div><p class="entry-preview">The grammar is genuinely difficult in a way Spanish isn't, because German encodes relationships in the word endings rather than word order. But the unexpected thing is how much it rewires you to think about English structure you'd never consciously noticed.</p><div class="entry-footer"><span class="entry-read-link">Read Entry</span><span class="entry-mins">5 min read</span></div></a>
-        </div>
-        <aside class="journal-sidebar fade-up">
-          <div class="sidebar-card"><h4>Filter by tag</h4><div class="tag-cloud"><span class="tag-chip">All</span><span class="tag-chip">Reflection</span><span class="tag-chip">Work</span><span class="tag-chip">Books</span><span class="tag-chip">Art</span><span class="tag-chip">Habits</span><span class="tag-chip">Health</span><span class="tag-chip">Language</span><span class="tag-chip">Learning</span><span class="tag-chip">25 Things</span><span class="tag-chip">Product</span></div></div>
-          <div class="sidebar-card"><h4>By month</h4><ul class="month-list"><li><a href="#">June 2026</a><span class="month-count">2</span></li><li><a href="#">May 2026</a><span class="month-count">2</span></li><li><a href="#">April 2026</a><span class="month-count">1</span></li><li><a href="#">March 2026</a><span class="month-count">1</span></li></ul></div>
-          <div class="substack-cta"><h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:1rem;font-weight:700">On Substack</h4><p>Some entries graduate to essays. The longer, more polished writing lives on Substack.</p><a href="https://substack.com/@bhatta20/posts" target="_blank" class="btn-primary" style="font-size:.78rem;padding:.7rem 1.5rem">Visit Substack →</a></div>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <footer><span>© 2026 Shreya Bhattacharya</span><a href="../index.html">← Back to Garden</a></footer>
-  <script>
-    document.addEventListener('DOMContentLoaded',function(){
-      const dot=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-      if(dot&&ring){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});(function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();document.addEventListener('mouseover',e=>{e.target.closest('a,button')?ring.classList.add('hover'):ring.classList.remove('hover')});document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0'});document.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='.55'})}
-      window.addEventListener('scroll',()=>{const n=document.getElementById('navbar');if(n)n.classList.toggle('scrolled',scrollY>60)});
-      const btn=document.getElementById('navHamburger'),links=document.getElementById('navLinks'),ov=document.getElementById('navOverlay');
-      if(btn){function tog(o){btn.classList.toggle('open',o);links.classList.toggle('open',o);if(ov)ov.classList.toggle('open',o);document.body.style.overflow=o?'hidden':''}btn.addEventListener('click',()=>tog(!links.classList.contains('open')));if(ov)ov.addEventListener('click',()=>tog(false));links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>tog(false)))}
-      document.documentElement.classList.add('js-animate');
-      const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px -20px 0px'});
-      document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-    });
-  </script>
+  <nav><a href="index.html" class="nav-logo">The Shreya Project</a></nav>
+  <main>
+    <h1>Thought Journal</h1>
+    <p>Coming soon.</p>
+    <a href="index.html" class="back">← Back to home</a>
+  </main>
+  <footer>
+    <span>© 2026 Shreya Bhattacharya</span>
+    <a href="index.html">← The Shreya Project</a>
+  </footer>
 </body>
 </html>
